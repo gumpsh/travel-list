@@ -22,7 +22,16 @@ function App() {
   // stats - "You have ${items.size} items on your list, and you already packed ${packedItems} (%)"
   const [list, setList] = useState(initialItems);
 
-  function handleAddItem(item) {
+  function handleAddItem(amount, description) {
+    const item = {
+      id: list.length + 1,
+      description: description,
+      quantity: amount,
+      packed: false,
+    };
+
+    console.log("item", item);
+
     setList((currentItems) => [...currentItems, item]);
   }
 

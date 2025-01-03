@@ -1,8 +1,13 @@
+import { useState } from "react";
 import "../index.css";
 
 export default function Form({ onAdd }) {
-  function add(item) {
-    onAdd(item);
+  const [amount, setAmount] = useState(1);
+  const [description, setDescription] = useState("");
+
+  function add() {
+    console.log("amount", amount, "desc", description);
+    onAdd(amount, description);
   }
 
   const options = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -10,12 +15,12 @@ export default function Form({ onAdd }) {
   return (
     <div className="add-form">
       <h3>What do you need for your trip?</h3>
-      <select name="amount">
+      <select name="amount" value={amount} onChange={(e) => setAmount(e.target.value)}>
         {options.map((o) => (
-          <option value={options[o - 1]}>{options[o - 1]}</option>
+          <option value={o}>{options[o - 1]}</option>
         ))}
       </select>
-      <input></input>
+      <input value={description} onChange={(d) => setDescription(d.target.value)}></input>
       <button onClick={add}>ADD</button>
     </div>
   );

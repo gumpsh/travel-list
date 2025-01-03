@@ -24,7 +24,7 @@ export default function PackingList({ list, onRemove, onPacked }) {
         {list.map((item) => (
           <li key={item.id}>
             <input type="checkbox" checked={item.packed} onChange={pack} />
-            <h3>{`${item.quantity}${item.description}`}</h3>
+            <h3>{`${item.quantity} ${item.description}`}</h3>
             <button onClick={remove}>&times;</button>
           </li>
         ))}
