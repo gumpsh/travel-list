@@ -8,14 +8,17 @@ import "../index.css";
 
 export default function PackingList({ list, onRemove, onPacked }) {
   const [isChecked, setIsChecked] = useState(false);
+  const [isPacked, setIsPacked] = useState(false);
 
   function remove(item) {
     onRemove(item);
   }
 
   function pack(item) {
+    item.packed = true;
     setIsChecked(!isChecked);
-    onPacked(item, isChecked);
+    setIsPacked(true);
+    onPacked(item);
   }
 
   return (
@@ -23,9 +26,9 @@ export default function PackingList({ list, onRemove, onPacked }) {
       <ul>
         {list.map((item) => (
           <li key={item.id}>
-            <input type="checkbox" checked={item.packed} onChange={pack} />
+            <input type="checkbox" checked={item.packed} onChange={() => pack(item)} />
             <h3>{`${item.quantity} ${item.description}`}</h3>
-            <button onClick={remove}>&times;</button>
+            <button onClick={() => remove(item)}>&times;</button>
           </li>
         ))}
       </ul>

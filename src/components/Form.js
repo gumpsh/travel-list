@@ -6,7 +6,6 @@ export default function Form({ onAdd }) {
   const [description, setDescription] = useState("");
 
   function add() {
-    console.log("amount", amount, "desc", description);
     onAdd(amount, description);
   }
 

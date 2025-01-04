@@ -11,16 +11,8 @@ const initialItems = [
 ];
 
 function App() {
-  // logo - images and title
-
-  // form to add items - amount, item name, add button (adds to a list)
-
-  // packingList - display a list of items, also has a sort button and a clear list button
-
-  // item - checkbox (true = packed), amount, name, X (remove item)
-
-  // stats - "You have ${items.size} items on your list, and you already packed ${packedItems} (%)"
   const [list, setList] = useState(initialItems);
+  const [packedItems, setPackedItems] = useState([]);
 
   function handleAddItem(amount, description) {
     const item = {
@@ -30,9 +22,9 @@ function App() {
       packed: false,
     };
 
-    console.log("item", item);
+    const updatedItems = (current) => [...current, item];
 
-    setList((currentItems) => [...currentItems, item]);
+    setList(updatedItems);
   }
 
   function handleRemoveItem(item) {
@@ -40,14 +32,17 @@ function App() {
     setList(filteredList);
   }
 
-  function handlePackedItem(item, isChecked) {}
+  function handlePackedItem(item) {
+    const itemsPacked = (current) => [...current, item];
+    setPackedItems(itemsPacked);
+  }
 
   return (
     <div className="app">
       <Logo />
       <Form onAdd={handleAddItem} />
-      <PackingList list={list} onRemove={handleRemoveItem} />
-      <Stats itemAmount={list.length} />
+      <PackingList list={list} onRemove={handleRemoveItem} onPacked={handlePackedItem} />
+      <Stats itemAmount={list.length} packedItems={packedItems.length} />
     </div>
   );
 }
