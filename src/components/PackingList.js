@@ -1,11 +1,6 @@
 import { useState } from "react";
 import "../index.css";
 
-// const initialItems = [
-//   { id: 1, description: "Passports", quantity: 2, packed: false },
-//   { id: 2, description: "Socks", quantity: 12, packed: false },
-// ];
-
 export default function PackingList({ list, onRemove, onPacked }) {
   const [isChecked, setIsChecked] = useState(false);
   const [isPacked, setIsPacked] = useState(false);
@@ -15,6 +10,7 @@ export default function PackingList({ list, onRemove, onPacked }) {
   }
 
   function pack(item) {
+    // need to sort out unchecking checkboxes
     item.packed = true;
     setIsChecked(!isChecked);
     setIsPacked(true);
@@ -27,8 +23,11 @@ export default function PackingList({ list, onRemove, onPacked }) {
         {list.map((item) => (
           <li key={item.id}>
             <input type="checkbox" checked={item.packed} onChange={() => pack(item)} />
-            <h3>{`${item.quantity} ${item.description}`}</h3>
-            <button onClick={() => remove(item)}>&times;</button>
+            <h3
+              style={
+                item.packed ? { textDecoration: "line-through" } : {}
+              }>{`${item.quantity} ${item.description}`}</h3>
+            <button onClick={() => remove(item)}>X</button>
           </li>
         ))}
       </ul>

@@ -9,8 +9,13 @@ export default function Stats({ itemAmount, packedItems }) {
   }, [itemAmount, packedItems]);
 
   return (
-    <div className="stats">
-      <h3>{`You have ${itemAmount} items on your list, and you already packed ${packedItems} (${percentagePacked}%)`}</h3>
-    </div>
+    <footer className="stats">
+      <h3>👜</h3>
+      <em>
+        {`You have ${itemAmount} items on your list, and you already packed ${packedItems} (${Math.round(
+          percentagePacked
+        )}%)`}
+      </em>
+    </footer>
   );
 }

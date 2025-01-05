@@ -133,6 +133,8 @@ input[type="checkbox"] {
 }
 
 .stats {
+  display: flex;
+  justify-content: center;
   background-color: #76c7ad;
   text-align: center;
   font-weight: 700;
