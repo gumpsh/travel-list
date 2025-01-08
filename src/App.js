@@ -5,14 +5,8 @@ import PackingList from "./components/PackingList";
 import Stats from "./components/Stats";
 import "./index.css";
 
-const initialItems = [
-  { id: 1, description: "Passports", quantity: 2, packed: false },
-  { id: 2, description: "Socks", quantity: 12, packed: false },
-];
-
 export default function App() {
-  const [list, setList] = useState(initialItems);
-  const [packedItems, setPackedItems] = useState([]);
+  const [list, setList] = useState([]);
 
   function handleAddItem(addedItem, amount) {
     // Only increment quantity for duplicate items
@@ -21,31 +15,34 @@ export default function App() {
     if (descriptions.includes(addedItem.description)) {
       const i = list.find((item) => item.description === addedItem.description);
       i.quantity += amount;
-      const updatedItems = (current) => [...current];
-      setList(updatedItems);
+      setList((current) => [...current]);
     } else {
       // Otherwise, just add the new item
-      const updatedItems = (current) => [...current, addedItem];
-      setList(updatedItems);
+      setList((current) => [...current, addedItem]);
     }
   }
 
-  function handleRemoveItem(item) {
-    const filteredList = list.filter((li) => li.id !== item.id);
+  function handleRemoveItem(id) {
+    const filteredList = list.filter((li) => li.id !== id);
     setList(filteredList);
   }
 
-  function handlePackedItem(item) {
-    const itemsPacked = (current) => [...current, item];
-    setPackedItems(itemsPacked);
+  function handleTogglePacked(id) {
+    setList((items) => items.map((item) => (item.id === id ? { ...item, packed: !item.packed } : item)));
+  }
+
+  function handleClearList() {
+    const confirmed = window.confirm("Confirm Clear List");
+
+    if (confirmed) setList([]);
   }
 
   return (
     <div className="app">
       <Logo />
       <Form onAdd={handleAddItem} listSize={list.length} />
-      <PackingList list={list} onRemove={handleRemoveItem} onPacked={handlePackedItem} />
-      <Stats itemAmount={list.length} packedItems={packedItems.length} />
+      <PackingList list={list} onRemove={handleRemoveItem} onPacked={handleTogglePacked} clearList={handleClearList} />
+      <Stats items={list} />
     </div>
   );
 }

@@ -1,40 +1,39 @@
 import { useState } from "react";
 import "../index.css";
 
-export default function PackingList({ list, onRemove, onPacked }) {
-  const [isChecked, setIsChecked] = useState(false);
-  const [isPacked, setIsPacked] = useState(false);
+export default function PackingList({ list, onRemove, onPacked, clearList }) {
+  const [sortBy, setSortBy] = useState("input");
 
-  function remove(item) {
-    onRemove(item);
-  }
+  let sortedList;
 
-  function pack(item) {
-    // need to sort out unchecking checkboxes
-    item.packed = true;
-    setIsChecked(!isChecked);
-    setIsPacked(true);
-    onPacked(item);
-  }
+  if (sortBy === "input") sortedList = list;
+
+  if (sortBy === "description") sortedList = list.slice().sort((a, b) => a.description.localeCompare(b.description));
+
+  if (sortBy === "packed") sortedList = list.slice().sort((a, b) => Number(b.packed) - Number(a.packed));
 
   return (
     <div className="list">
       <ul>
-        {list.map((item) => (
+        {sortedList.map((item) => (
           <li key={item.id}>
-            <input type="checkbox" checked={item.packed} onChange={() => pack(item)} />
+            <input type="checkbox" checked={item.packed} onChange={() => onPacked(item.id)} />
             <h3
               style={
                 item.packed ? { textDecoration: "line-through" } : {}
               }>{`${item.quantity} ${item.description}`}</h3>
-            <button onClick={() => remove(item)}>X</button>
+            <button onClick={() => onRemove(item.id)}>X</button>
           </li>
         ))}
       </ul>
+      <div className="actions">
+        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+          <option value="input">SORT BY INPUT</option>
+          <option value="description">SORT BY DESCRIPTION</option>
+          <option value="packed">SORT BY PACKED STATUS</option>
+        </select>
+        <button onClick={clearList}>CLEAR LIST</button>
+      </div>
     </div>
   );
 }
-
-// {
-//     /* <li>{<Item key={item.id} description={item.description} quantity={item.quantity} packed={item.packed} />}</li> */
-//   }
